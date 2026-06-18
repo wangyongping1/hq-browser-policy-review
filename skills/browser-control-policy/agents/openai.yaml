@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser Control Policy"
+  short_description: "Route browser tasks to the correct surface"
+  default_prompt: "Use $browser-control-policy to decide whether a browser task must use hq-browser or the cloud browser tools."

@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-06-18T08:59:04.986Z",
+  "review_root": "C:/tmp/hq-browser-policy-review-20260618T085904Z",
+  "packages": [
+    "packages/hq-browser-server-direct-install.tar.gz",
+    "packages/hq-browser-server-direct-install-fixed.zip",
+    "packages/hq-browser-server-direct-install.zip",
+    "packages/hq-agent-skills-browser-policy.tar.gz"
+  ],
+  "skills": [
+    "skills/browser-control-policy",
+    "skills/xhs-hq-browser-publisher",
+    "skills/xhs-hq-browser-video-publisher"
+  ],
+  "server_installed_paths": [
+    "/opt/data/skills/browser-control-policy",
+    "/opt/data/skills/xiaohongshu/xhs-hq-browser-publisher",
+    "/opt/data/skills/xiaohongshu/xhs-hq-browser-video-publisher"
+  ],
+  "server_smoke_test_url": "https://example.com/?skill-policy-smoke=1"
+}

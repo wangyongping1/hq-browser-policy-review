@@ -1,0 +1,4 @@
+interface:
+  display_name: "XHS hq-browser Video"
+  short_description: "Publish Xiaohongshu videos via host Chrome."
+  default_prompt: "Use $xhs-hq-browser-video-publisher to prepare a Xiaohongshu video post through hq-browser."

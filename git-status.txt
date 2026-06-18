@@ -1,0 +1,10 @@
+ M apps/chrome/README.md
+ M apps/chrome/docker-compose.yml
+?? .agents/skills/browser-control-policy/
+?? .agents/skills/test-lightpanda-camofox/
+?? .agents/skills/xhs-hq-browser-publisher/
+?? .agents/skills/xhs-hq-browser-video-publisher/
+?? "C\357\200\272Users15931837798/"
+?? "apps/chrome/C\357\200\272Users15931837798/"
+?? apps/chrome/docs/hq-browser-relay-bridge-migration.md
+?? apps/chrome/scripts/

@@ -1,0 +1,4 @@
+interface:
+  display_name: "XHS hq-browser Publisher"
+  short_description: "Publish Xiaohongshu posts via host Chrome."
+  default_prompt: "Use $xhs-hq-browser-publisher to publish a Xiaohongshu image or video post through hq-browser."
