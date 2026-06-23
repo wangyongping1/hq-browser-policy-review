@@ -43,6 +43,8 @@ Do not click the final publish/submit button unless the user has explicitly aske
 
 4. Choose note type:
 
+   The page defaults to **"上传视频"** mode. Before uploading an image, switch to **"上传图文"** mode by clicking the corresponding tab. From `snapshot`, both @e5 and @e6 may show as "上传图文"; try @e6 if @e5 does not switch the page. After switching, the URL gains `?from=tab_switch` and the upload area changes from "拖拽视频到此" to "上传图片，或写文字生成图片".
+
    - Image-text note: upload one or more images from `/opt/data/workspace/image`.
    - Video note: upload one video from `/opt/data/workspace/video` or `/opt/data/workspace/videos`.
 
@@ -63,6 +65,19 @@ Do not click the final publish/submit button unless the user has explicitly aske
    If direct selector upload fails, use `snapshot` to find the upload control, click it, then retry the file input selector.
 
 6. Fill title, body/caption, tags/topics, and any required fields using visible labels, placeholders, or refs from `snapshot`.
+
+   **Title**: The title input is an `<input>` element. Use `hq-browser fill` with a placeholder selector:
+   ```bash
+   hq-browser fill 'input[placeholder*="标题"]' '标题文本'
+   ```
+
+   **Body**: The body editor is a contenteditable `<div>`, NOT a `<textarea>`. `hq-browser fill 'textarea'` will fail with "Element not found". Instead, click the body textbox ref from snapshot, then type:
+   ```bash
+   hq-browser click @e29
+   hq-browser wait 500
+   hq-browser keyboard type '正文内容'
+   ```
+   The body ref (typically @e29) is identifiable in the snapshot as the top-level `textbox` inside the editing area, below the title input and above the topic-suggestion row.
 
 7. Verify:
 
@@ -111,7 +126,14 @@ Fill by placeholder, label, or selector:
 
 ```bash
 hq-browser fill 'input[placeholder*="标题"]' '标题文本'
-hq-browser fill 'textarea' '正文文本 #话题'
+```
+
+Fill body (contenteditable div — textarea selector won't match):
+
+```bash
+hq-browser click @e29
+hq-browser wait 500
+hq-browser keyboard type '正文内容'
 ```
 
 Upload:

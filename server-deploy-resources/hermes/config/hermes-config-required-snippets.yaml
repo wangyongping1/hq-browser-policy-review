@@ -1,0 +1,44 @@
+plugins:
+  enabled:
+  - hermes-internal
+  - image_gen/siliconflow
+  - object-storage
+  - observability/langfuse
+  - spotify
+  - video_gen/siliconflow
+  - minio_media_upload
+  - camofox-extra
+  disabled:
+  - xiaohongshu
+  - image_gen/volcengine
+  - video_gen/volcengine
+browser:
+  inactivity_timeout: 120
+  command_timeout: 30
+  record_sessions: false
+  allow_private_urls: false
+  engine: auto
+  auto_local_for_private_urls: true
+  cdp_url: ''
+  dialog_policy: must_respond
+  dialog_timeout_s: 300
+  camofox:
+    managed_persistence: true
+    user_id: test
+    session_key: test
+    adopt_existing_tab: false
+    rewrite_loopback_urls: true
+    loopback_host_alias: host.docker.internal
+  cloud_provider: camofox
+  use_gateway: false
+relay:
+  chrome:
+    bridge_relay_url: ws://192.168.1.100:8787/relay
+    bridge_token: REPLACE_WITH_TARGET_ENV_TOKEN
+    client_relay_url: ws://chrome-use:8787/cdp
+    client_token: REPLACE_WITH_TARGET_ENV_TOKEN
+  filesystem:
+    bridge_relay_url: ws://192.168.1.100:8788/relay
+    bridge_token: REPLACE_WITH_TARGET_ENV_TOKEN
+    client_mcp_url: http://filesystem-use:8788/mcp
+    client_token: REPLACE_WITH_TARGET_ENV_TOKEN

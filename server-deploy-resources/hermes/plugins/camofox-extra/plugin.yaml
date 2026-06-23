@@ -1,0 +1,15 @@
+name: camofox-extra
+version: 0.1.0
+description: CamoFox REST API helper tools for diagnostics, page metadata, viewport control, macro search, and structured extraction.
+author: Huaqing
+provides_tools:
+  - camofox_health
+  - camofox_tabs
+  - camofox_links
+  - camofox_images
+  - camofox_downloads
+  - camofox_stats
+  - camofox_screenshot
+  - camofox_viewport
+  - camofox_macro_search
+  - camofox_extract

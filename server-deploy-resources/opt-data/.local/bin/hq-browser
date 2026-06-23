@@ -1,0 +1,98 @@
+#!/usr/bin/env sh
+set -eu
+
+CONFIG_DIR="${HUAQING_BROWSER_CONFIG_DIR:-/opt/data/.config/hq-browser}"
+CONFIG_CDP_URL_FILE="${HUAQING_BROWSER_CDP_URL_FILE:-$CONFIG_DIR/cdp-url}"
+if [ -n "${HUAQING_BROWSER_CDP_URL:-}" ]; then
+  CDP_URL="$HUAQING_BROWSER_CDP_URL"
+elif [ -r "$CONFIG_CDP_URL_FILE" ]; then
+  CDP_URL="$(sed -n '1p' "$CONFIG_CDP_URL_FILE")"
+else
+  CDP_URL="ws://lightpanda:9223"
+fi
+ENGINE="${HUAQING_BROWSER_ENGINE:-chrome}"
+AGENT_BROWSER="${AGENT_BROWSER_BIN:-/opt/hermes/node_modules/.bin/agent-browser}"
+LOCK_ROOT="${HUAQING_BROWSER_LOCK_ROOT:-/tmp/hq-browser-locks-$(id -u)}"
+
+usage() {
+  cat <<'EOF'
+hq-browser - Huaqing browser command wrapper
+
+Usage:
+  hq-browser <agent-browser-command> [args...]
+
+Environment:
+  HUAQING_BROWSER_CDP_URL   CDP websocket URL. Default: ws://lightpanda:9223
+  HUAQING_BROWSER_CDP_URL_FILE
+                             File containing the default CDP websocket URL.
+                             Default: /opt/data/.config/hq-browser/cdp-url
+  HUAQING_BROWSER_ENGINE    agent-browser engine. Default: chrome
+  AGENT_BROWSER_BIN         agent-browser binary path.
+
+Examples:
+  hq-browser open https://example.com
+  hq-browser get url
+  hq-browser --json snapshot
+  hq-browser reset
+
+The wrapper serializes commands for one CDP endpoint per runtime user to avoid multiple
+agent-browser clients replacing each other on a relay-style single-client CDP
+session.
+EOF
+}
+
+if [ "$#" -eq 0 ]; then
+  usage
+  exit 2
+fi
+
+case "${1:-}" in
+  -h|--help|help)
+    usage
+    exit 0
+    ;;
+  reset)
+    rm -rf "$LOCK_ROOT"
+    "$AGENT_BROWSER" --engine "$ENGINE" close --all || true
+    echo "hq-browser reset complete"
+    exit 0
+    ;;
+esac
+
+if [ ! -x "$AGENT_BROWSER" ]; then
+  if command -v agent-browser >/dev/null 2>&1; then
+    AGENT_BROWSER="$(command -v agent-browser)"
+  else
+    echo "hq-browser: agent-browser not found at $AGENT_BROWSER" >&2
+    exit 127
+  fi
+fi
+
+mkdir -p "$LOCK_ROOT"
+LOCK_NAME="$(printf '%s' "$CDP_URL" | sed 's/[^A-Za-z0-9_.-]/_/g')"
+LOCK_DIR="$LOCK_ROOT/$LOCK_NAME.lock"
+LOCK_PID="$LOCK_DIR/pid"
+
+acquire_lock() {
+  i=0
+  while ! mkdir "$LOCK_DIR" 2>/dev/null; do
+    if [ -f "$LOCK_PID" ]; then
+      holder="$(cat "$LOCK_PID" 2>/dev/null || true)"
+      if [ -n "$holder" ] && ! kill -0 "$holder" 2>/dev/null; then
+        rm -rf "$LOCK_DIR"
+        continue
+      fi
+    fi
+    i=$((i + 1))
+    if [ "$i" -ge 600 ]; then
+      echo "hq-browser: timed out waiting for browser lock: $CDP_URL" >&2
+      exit 75
+    fi
+    sleep 0.1
+  done
+  trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT INT TERM
+}
+
+acquire_lock
+printf '%s\n' "$$" > "$LOCK_PID"
+"$AGENT_BROWSER" --engine "$ENGINE" --cdp "$CDP_URL" "$@"

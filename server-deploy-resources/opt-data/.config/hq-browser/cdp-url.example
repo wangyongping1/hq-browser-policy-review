@@ -1,0 +1,3 @@
+# Replace this with the chrome-use relay CDP websocket URL for the target server/profile.
+# Example format:
+# ws://chrome-use-relay:8787/cdp?token=REPLACE_WITH_CLIENT_TOKEN

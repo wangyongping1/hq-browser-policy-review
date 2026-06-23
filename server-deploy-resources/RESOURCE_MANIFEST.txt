@@ -1,0 +1,10 @@
+Exported from 192.168.1.100 on 2026-06-23T07:53:59Z
+
+Included install resources:
+- opt-data/.local/bin/hq-browser -> container path /opt/data/.local/bin/hq-browser
+- opt-data/skills/browser-control-policy -> container path /opt/data/skills/browser-control-policy
+- opt-data/skills/xiaohongshu/xhs-hq-browser-publisher -> container path /opt/data/skills/xiaohongshu/xhs-hq-browser-publisher
+- opt-data/skills/xiaohongshu/xhs-hq-browser-video-publisher -> container path /opt/data/skills/xiaohongshu/xhs-hq-browser-video-publisher
+- hermes/plugins/camofox-extra -> host path /home/ubuntu/.hermes/plugins/camofox-extra
+- hermes/config/hermes-config-required-snippets.yaml -> redacted config snippets from /home/ubuntu/.hermes/config.yaml
+- opt-data/.config/hq-browser/cdp-url.example -> template only; token intentionally not exported

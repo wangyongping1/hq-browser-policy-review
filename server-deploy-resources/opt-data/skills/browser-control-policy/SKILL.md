@@ -43,6 +43,18 @@ For cloud or sandbox browser work, use the available browser tools such as navig
 
 Cloud browser work is appropriate when the task does not require the user's local login/session and does not need to alter the user's visible Chrome.
 
+### CamoFox-specific
+
+**Macro search requires a live tab first.** `camofox_macro_search` (e.g., `@wikipedia_search`, `@google_search`) fails with "No current CamoFox tab" if no tab exists. Always call `browser_navigate` to any URL first to establish a tab, then use the macro.
+
+**Tabs can become stale.** If `camofox_*` tools return "No current CamoFox tab", re-navigate with `browser_navigate` to re-establish the tab.
+
+**`camofox_extract` schema is fragile.** The tool rejects schemas that lack a proper `type: object` declaration — even an empty `{}` fails. In practice the parameter may be stripped or mangled by the toolchain. Prefer `camofox_links` for link extraction, `camofox_images` for image metadata, and `browser_snapshot` for content when structured extraction fails.
+
+**`camofox_images` returns metadata only.** It extracts `src`, `alt`, `width`, `height` for each image on the page — it does NOT download image files. Use `camofox_downloads` to check actual download history.
+
+**Health check before debugging.** When CamoFox tools fail, call `camofox_health` first to confirm the service is connected and running before troubleshooting further.
+
 ## Prohibited
 
 When the task is host-browser work:

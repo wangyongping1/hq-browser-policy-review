@@ -25,11 +25,15 @@ hq-browser --json snapshot
 
 If URL contains `/login`, stop and ask the user to log in on host Chrome.
 
+## Note Type Default
+
+The page defaults to **"上传视频"** mode. Before uploading images, click **"上传图文"** to switch. From snapshot, both @e5 and @e6 may show as "上传图文"; try @e6 if @e5 does not switch. After switching, the URL gains `?from=tab_switch`.
+
 ## Image-Text Note
 
 1. Choose one or more images.
 2. Open the publish page.
-3. If there is a note type switch, choose image/text or upload images mode.
+3. If the page is in video mode, switch to image-text mode first (see "Note Type Default" above).
 4. Upload with JS DataTransfer injection:
 
    ```bash
@@ -43,7 +47,20 @@ If URL contains `/login`, stop and ask the user to log in on host Chrome.
    hq-browser --json snapshot
    ```
 
-6. Fill title and content using visible placeholders or refs.
+6. Fill title and content:
+
+   **Title**: Use placeholder selector:
+   ```bash
+   hq-browser fill 'input[placeholder*="标题"]' '标题文本'
+   ```
+
+   **Body**: The body editor is a contenteditable `<div>`, not a `<textarea>`. Click the body ref from snapshot then type:
+   ```bash
+   hq-browser click @e29
+   hq-browser wait 500
+   hq-browser keyboard type '正文内容'
+   ```
+
 7. Add tags/topics in the content body or tag controls as requested.
 8. Stop before final publish unless confirmed.
 
